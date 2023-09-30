@@ -1,47 +1,38 @@
-# Etech-A-Sketch App
-
 from turtle import Turtle, Screen
+from random import randint
 
-ammu = Turtle()
+is_race_on = False
 screen = Screen()
-screen.listen()
+screen.setup(width=500, height=400)
+user_bet = screen.textinput(title="Make your bet", prompt="Which turtle will win the race? enter a colour: ")
+
+colour = ["red", "orange", "yellow", "green", "blue", "purple"]
+turtles = ["Redturtle", "Orangeturtle", "Yellowturtle", "Greenturtle", "Blueturtle", "purpleturtle"]
+initial_distance = - 150
+
+for i in range(0, 6):
+    turtles[i] = Turtle(shape="turtle")
+    turtles[i].color(colour[i])
+    initial_distance += 50
+    turtles[i].penup()
+    turtles[i].goto(x=-240, y=initial_distance)
 
 
-def moving_forward():
-    """to move forward"""
-    ammu.forward(10)
+if user_bet.lower() not in colour:
+    print(f" sorry, {user_bet} is not participating in the race.")
+else:
+    is_race_on = True
 
-
-def moving_backward():
-    """to move backward"""
-    ammu.backward(10)
-
-
-def turn_left():
-    """to turn left side by 10 degree"""
-    new_heading = ammu.heading() + 10
-    ammu.setheading(new_heading)
-
-
-def turn_right():
-    """to turn right side by 10 degree"""
-    new_heading = ammu.heading() - 10
-    ammu.setheading(new_heading)
-
-
-def clear_screen():
-    """it will clear the drawing and goes back to the starting point"""
-    ammu.clear()
-    ammu.penup()
-    ammu.home()
-    ammu.pendown()
-
-
-# from the below code the drawing will take place
-screen.onkey(fun=moving_forward, key="w")
-screen.onkey(fun=moving_backward, key="s")
-screen.onkey(fun=clear_screen, key="c")
-screen.onkey(fun=turn_left, key="a")
-screen.onkey(fun=turn_right, key="d")
+while is_race_on:
+    for turtle in turtles:
+        if turtle.xcor() > 230:
+            is_race_on = False
+            winning_colour = turtle.pencolor()
+            if winning_colour == user_bet:
+                print("yaay! you won!")
+            else:
+                print("sorry you lost")
+        random_distance = randint(0, 10)
+        turtle.forward(random_distance)
 
 screen.exitonclick()
